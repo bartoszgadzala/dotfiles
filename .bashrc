@@ -16,6 +16,9 @@ alias ll="ls -l"
 alias la="ls -a"
 alias tmux="tmux -2"
 
+# Settings
+export EDITOR="vim"
+
 # Dircolors
 eval `dircolors .dir_colors`
 export TERM=xterm-256color 
