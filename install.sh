@@ -1,10 +1,16 @@
 #!/bin/bash
 INSTALLDIR=${1:-$HOME}
 
-for i in .fonts .tmux.conf .vim .vimrc
+for i in .bashrc .dir_colors .fonts .tmux.conf .vim .vimrc
 do
-	mv $INSTALLDIR/$i $INSTALLDIR/$i.old 2> /dev/null
-	ln -s $PWD/$i $INSTALLDIR/$i;
+	F=$INSTALLDIR/$i
+	if [ $F -ef $i ]; then
+		echo "$F already linked"
+	else
+		echo "Linking $F to $PWD/$i"
+		mv $F $F.old 2> /dev/null
+		ln -s $PWD/$i $F;
+	fi
 done;
 
 echo "Initializing submodules..."

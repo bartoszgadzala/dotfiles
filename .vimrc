@@ -1,27 +1,19 @@
 set nocompatible
 filetype off
 
-" Bootstrap Vundle
+"============== Bootstrap Vundle ============
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Bundle 'gmarik/vundle'
 
-" Bundles
+"================= Bundles ===================
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 
-" Configure Solarized
-set background=dark
-colorscheme solarized
+"=========== Load custom settings ============
+source ~/.vim/startup/mappings.vim
+source ~/.vim/startup/settings.vim
 
-" Configure Airline
-set laststatus=2
-set gfn=Source\ Code\ Pro\ for\ Powerline\ Light\ 10
-let g:airline_powerline_fonts=1
-
-syntax enable
-filetype plugin indent on
-
-set number
-set autowrite
-
+"============== Filetype stuff ===============
+filetype plugin on
+filetype indent on
