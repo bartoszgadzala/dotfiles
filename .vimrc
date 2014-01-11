@@ -12,6 +12,7 @@ Bundle 'bling/vim-airline'
 Bundle 'jdonaldson/vaxe'
 Bundle 'scrooloose/syntastic'
 Bundle 'Shougo/neocomplcache'
+Bundle 'scrooloose/nerdtree'
 
 "=========== Load custom settings ============
 source ~/.vim/startup/mappings.vim
