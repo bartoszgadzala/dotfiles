@@ -9,6 +9,9 @@ Bundle 'gmarik/vundle'
 "================= Bundles ===================
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
+Bundle 'jdonaldson/vaxe'
+Bundle 'scrooloose/syntastic'
+Bundle 'Shougo/neocomplcache'
 
 "=========== Load custom settings ============
 source ~/.vim/startup/mappings.vim
