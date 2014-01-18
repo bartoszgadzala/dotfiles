@@ -15,6 +15,7 @@ alias ls="ls --color"
 alias ll="ls -l"
 alias la="ls -a"
 alias tmux="tmux -2"
+alias yum="sudo yum -y"
 
 # Settings
 export EDITOR="vim"
