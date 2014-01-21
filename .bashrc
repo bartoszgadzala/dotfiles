@@ -17,11 +17,14 @@ alias la="ls -a"
 alias tmux="tmux -2"
 alias yum="sudo yum -y"
 
+# Path
+export PATH=$PATH:~/bin
+
 # Settings
 export EDITOR="vim"
 
 # Dircolors
-eval `dircolors .dir_colors`
+eval `dircolors ~/.dir_colors`
 export TERM=xterm-256color 
 
 # Powerline
