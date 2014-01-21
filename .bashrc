@@ -37,3 +37,6 @@ function _update_ps1() {
 }
 export PROMPT_COMMAND="_update_ps1"
 
+# Mopidy
+if [ ! "$(pgrep mopidy)" ]; then (mopidy &> /dev/null &); fi
+
