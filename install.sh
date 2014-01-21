@@ -1,7 +1,7 @@
 #!/bin/bash
 INSTALLDIR=${1:-$HOME}
 
-for i in .bashrc .dir_colors .fonts .tmux.conf .vim .vimrc
+for i in .bashrc .dir_colors .fonts .tmux.conf .vim .vimrc .canto/conf.py
 do
 	F=$INSTALLDIR/$i
 	if [ $F -ef $i ]; then
