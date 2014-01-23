@@ -24,12 +24,14 @@ export PATH=$PATH:~/bin
 export EDITOR="vim"
 
 # Dircolors
-eval `dircolors ~/.dir_colors`
-export TERM=xterm-256color 
+if [[ $TERM == xterm* ]]; then
+	eval `dircolors ~/.dir_colors`
+	export TERM=xterm-256color 
+fi
 
 # Powerline
 function _update_ps1() {
-	if [ -f ~/bin/powerline-shell/powerline-shell.py ]; then
+	if [[ -f ~/bin/powerline-shell/powerline-shell.py ]] && [[ $TERM == xterm* ]] && [[ ! `ps $PPID | grep 'mc\|gjs'` ]]; then
 		export PS1="$(~/bin/powerline-shell/powerline-shell.py $? 2> /dev/null)"
 	else
 		export PS1="[\u@\h \W]\\$ "
@@ -40,3 +42,5 @@ export PROMPT_COMMAND="_update_ps1"
 # Mopidy
 if [ ! "$(pgrep mopidy)" ]; then (mopidy &> /dev/null &); fi
 
+# Update RSS feeds
+if [ ! "$(pgrep canto-fetch)" ]; then (canto-fetch -db); fi
