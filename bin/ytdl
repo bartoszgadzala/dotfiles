@@ -1,4 +1,4 @@
 #!/bin/sh
 
-youtube-dl --max-quality mp4 --recode-video mp4 --write-auto-sub --sub-lang pl $*
+youtube-dl -i --max-quality mp4 --sub-lang pl $*
 notify-send "Zakończono pobieranie" "Pobrano film $*"
