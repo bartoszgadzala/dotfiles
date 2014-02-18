@@ -16,6 +16,7 @@ alias ll="ls -l"
 alias la="ls -a"
 alias tmux="tmux -2"
 alias yum="sudo yum -y"
+alias umount="sudo umount"
 
 # Path
 export PATH=$PATH:~/bin

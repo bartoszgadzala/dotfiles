@@ -1,0 +1,22 @@
+#!/bin/sh
+
+DEST=/run/media/bartek/ADATA_EXT4/backup/
+
+function backup_dir()
+{
+	SRC=$1
+	echo Creating backup of [$SRC] to [$DEST]...
+	rsync -aqu --inplace --no-motd $SRC $DEST && sync
+}
+
+if [[ -d $DEST ]]; then
+	notify-send --urgency=Normal --app-name=Backup "Backup started" "Backup of the vital files started. Do not unplug disk until it finished."
+	backup_dir ~/Dokumenty
+	backup_dir ~/Pobrane
+	backup_dir ~/workspace
+	notify-send --urgency=Normal --app-name=Backup "Backup finished" "Backup is done. You can safely umount disk."
+	exit 0
+else
+	echo There is no backup drive mounted at [$DEST]. Exiting.
+	exit 1
+fi
