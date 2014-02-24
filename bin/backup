@@ -9,12 +9,20 @@ function backup_dir()
 	rsync -aqu --inplace --no-motd $SRC $DEST && sync
 }
 
-if [[ -d $DEST ]]; then
+LOCKFILE=/tmp/${USER}_backup.lock
+if [[ -e $LOCKFILE ]]; then
+	echo There is a backup process already running...
+	exit 2
+elif [[ -d $DEST ]]; then
+	touch $LOCKFILE
+	logger "Backup of the vital files started. Do not unplug disk until it finished."
 	notify-send --urgency=Normal --app-name=Backup "Backup started" "Backup of the vital files started. Do not unplug disk until it finished."
 	backup_dir ~/Dokumenty
 	backup_dir ~/Pobrane
 	backup_dir ~/workspace
 	notify-send --urgency=Normal --app-name=Backup "Backup finished" "Backup is done. You can safely umount disk."
+	logger "Backup is done. You can safely umount disk."
+	rm -f $LOCKFILE
 	exit 0
 else
 	echo There is no backup drive mounted at [$DEST]. Exiting.
