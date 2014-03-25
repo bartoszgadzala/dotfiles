@@ -17,6 +17,7 @@ alias la="ls -a"
 alias tmux="tmux -2"
 alias yum="sudo yum -y"
 alias umount="sudo umount"
+alias bim="vim"
 
 # Path
 export PATH=$PATH:~/bin
