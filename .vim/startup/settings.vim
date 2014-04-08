@@ -1,6 +1,6 @@
 "============== General Settings ===============
 set cursorline
-set number
+set rnu
 set autowrite
 set enc=utf-8
 
