@@ -1,0 +1,57 @@
+#!/bin/sh
+
+function createHeaderFile()
+{
+	CLASS_NAME=$1
+	DEFINE=${1^^}_H
+	H_FILE=${2}.h
+	echo Creating header for $CLASS_NAME: $H_FILE
+	cat << [EOF] > ${H_FILE}
+#ifndef ${DEFINE}
+#define ${DEFINE}
+
+class ${CLASS_NAME}
+{
+public:
+	${CLASS_NAME}();
+	~${CLASS_NAME}();
+
+private:
+};
+
+#endif // ${DEFINE}
+[EOF]
+}
+
+function createImplementationFile() {
+	CLASS_NAME=$1
+	H_FILE=${2}.h
+	CPP_FILE=${2}.cpp
+	echo Creating implementation for $CLASS_NAME: $CPP_FILE
+	cat << [EOF] > ${CPP_FILE}
+#include "${H_FILE}"
+
+// ---------------------------------------------------------------------------
+
+${CLASS_NAME}::${CLASS_NAME}()
+{
+}
+
+${CLASS_NAME}::~${CLASS_NAME}()
+{
+}
+
+// ---------------------------------------------------------------------------
+[EOF]
+}
+
+CLASS_NAME=$1
+if [[ -z "$CLASS_NAME" ]]; then
+	echo Class name missing
+	exit 1
+fi
+FILE_BASE=${CLASS_NAME,,}
+
+echo Creating class $CLASS_NAME
+createHeaderFile		$CLASS_NAME $FILE_BASE
+createImplementationFile	$CLASS_NAME $FILE_BASE
