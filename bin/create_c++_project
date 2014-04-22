@@ -396,7 +396,7 @@ function makePortable()
 {
 	MODE=\$1
 	echo Creating portable archive...
-	cd build/\$MODE/main && zip -9 -r ../../${PROJECT_NAME}\${ARCH}_\${MODE}_\${VERSION}.zip . && cd ~-
+	cd build/\$MODE/main && zip -9 -r ../../${PROJECT_NAME}_win\${ARCH}_\${MODE}_\${VERSION}.zip . && cd ~-
 }
 
 . ./common.sh
