@@ -1,0 +1,472 @@
+#!/bin/sh
+
+function createProjectStructure()
+{
+	PROJECT_NAME=$1
+
+	echo Creating project structure...
+	mkdir -p ${PROJECT_NAME}/3rdparty/win{32,64}
+	mkdir -p ${PROJECT_NAME}/src/main/images
+}
+
+function createResources()
+{
+	PROJECT_NAME=$1
+	DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+	echo Creating project resources...
+	cp "${DIR}/data/icon_c++_project.ico" \
+		${PROJECT_NAME}/src/main/images/icon.ico
+	cp "${DIR}/data/icon_c++_project.png" \
+		${PROJECT_NAME}/src/main/images/icon.png
+
+	echo Creating ${PROJECT_NAME}/src/main/main.rc
+	cat << [EOF] > ${PROJECT_NAME}/src/main/main.rc
+IDI_ICON1               ICON    DISCARDABLE     "images/icon.ico"
+
+#include <windows.h>
+#include "version.h"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     VER_FILEVERSION
+PRODUCTVERSION  VER_PRODUCTVERSION
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",        VER_COMPANYNAME_STR
+            VALUE "FileDescription",    VER_FILEDESCRIPTION_STR
+            VALUE "FileVersion",        VER_FILEVERSION_STR
+            VALUE "InternalName",       VER_INTERNALNAME_STR
+            VALUE "LegalCopyright",     VER_LEGALCOPYRIGHT_STR
+            VALUE "LegalTrademarks1",   VER_LEGALTRADEMARKS1_STR
+            VALUE "LegalTrademarks2",   VER_LEGALTRADEMARKS2_STR
+            VALUE "OriginalFilename",   VER_ORIGINALFILENAME_STR
+            VALUE "ProductName",        VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/main.qrc
+	cat << [EOF] > ${PROJECT_NAME}/src/main/main.qrc
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+        <file alias="icon.png">images/icon.png</file>
+</qresource></RCC>
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/changelog.txt
+	cat << [EOF] > ${PROJECT_NAME}/changelog.txt
+${PROJECT_NAME} 1.0 
+
+        * Initial version
+[EOF]
+}
+
+
+function createProFiles() {
+	PROJECT_NAME=$1
+
+	echo Creating ${PROJECT_NAME}/appsuite.pro
+	cat << [EOF] > ${PROJECT_NAME}/appsuite.pro
+#-------------------------------------------------
+#
+# ${PROJECT_NAME}
+#
+#-------------------------------------------------
+TEMPLATE = subdirs
+
+SUBDIRS = src
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/common.pri
+	cat << [EOF] > ${PROJECT_NAME}/src/common.pri
+#-------------------------------------------------
+#
+# ${PROJECT_NAME}
+#
+#-------------------------------------------------
+unix:CONFIG += debug_and_release
+else:CONFIG += release
+
+CONFIG(debug, debug|release) {
+	BASEDESTDIR = ../../build/debug
+} else {
+	BASEDESTDIR = ../../build/release
+}
+
+DESTDIR = \$\$BASEDESTDIR/\$\$TARGET
+MOC_DIR = \$\$DESTDIR/moc
+OBJECTS_DIR = \$\$DESTDIR/obj
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/src.pro
+	cat << [EOF] > ${PROJECT_NAME}/src/src.pro
+#-------------------------------------------------
+#
+# ${PROJECT_NAME}
+#
+#-------------------------------------------------
+TEMPLATE = subdirs
+
+SUBDIRS = main
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/main.pro
+	cat << [EOF] > ${PROJECT_NAME}/src/main/main.pro
+#-------------------------------------------------
+#
+# ${PROJECT_NAME}
+#
+#-------------------------------------------------
+!include(../common.pri) {
+	error( Could not find the common.pri file! )
+}
+
+CONFIG   +=	qt
+QT       +=	core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET =	${PROJECT_NAME}
+
+TEMPLATE =	app
+
+SOURCES +=	main.cpp\\
+		mainwindow.cpp
+
+HEADERS  +=	mainwindow.h\\
+		version.h
+
+RESOURCES =	main.qrc
+RC_FILE =	main.rc
+
+win32:CONFIG(release, debug|release):	LIBS += -L\$\$DESTDIR
+else:unix:				LIBS += -L\$\$DESTDIR
+
+INCLUDEPATH +=	\$\$DESTDIR
+DEPENDPATH +=	\$\$DESTDIR
+[EOF]
+}
+
+function createSourceFiles() {
+	PROJECT_NAME=$1
+	COMPANY_NAME=$2
+	COMPANY_DOMAIN=$3
+	YEAR=`date +'%Y'`
+
+	echo Creating ${PROJECT_NAME}/src/version.h
+	cat << [EOF] > ${PROJECT_NAME}/src/version.h
+#ifndef COMMON_VERSION_H
+#define COMMON_VERSION_H
+
+#define VER_FILEVERSION             1,0,0,0
+#define VER_FILEVERSION_STR         "1.0.0.0\\0"
+
+#define VER_PRODUCTVERSION          1,0,0,0
+#define VER_PRODUCTVERSION_STR      "1.0\\0"
+
+#define VER_COMPANYNAME_STR         "${COMPANY_NAME}"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright (C) ${YEAR} ${COMPANY_NAME}"
+#define VER_LEGALTRADEMARKS1_STR    "All Rights Reserved"
+#define VER_LEGALTRADEMARKS2_STR    VER_LEGALTRADEMARKS1_STR
+#define VER_COMPANYDOMAIN_STR       "${COMPANY_DOMAIN}"
+
+#endif // COMMON_VERSION_H
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/version.h
+	cat << [EOF] > ${PROJECT_NAME}/src/main/version.h
+#ifndef VERSION_H
+#define VERSION_H
+
+#include "../version.h"
+
+#define VER_FILEDESCRIPTION_STR     "${PROJECT_NAME}"
+#define VER_INTERNALNAME_STR        "${PROJECT_NAME}"
+#define VER_ORIGINALFILENAME_STR    "${PROJECT_NAME}.exe"
+#define VER_PRODUCTNAME_STR         "${PROJECT_NAME}"
+
+#endif // VERSION_H
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/main.cpp
+	cat << [EOF] > ${PROJECT_NAME}/src/main/main.cpp
+#include <exception>
+#include <QApplication>
+#include <QMessageBox>
+
+#include "mainwindow.h"
+#include "version.h"
+
+int handleFatalError(QString errorMessage)
+{
+	QMessageBox messageBox;
+	messageBox.setIcon(QMessageBox::Critical);
+	messageBox.setWindowTitle("Error");
+	messageBox.setText("A fatal error has occured!");
+	messageBox.setInformativeText(errorMessage);
+	messageBox.setStandardButtons(QMessageBox::Close);
+	messageBox.setMinimumWidth(600);
+	messageBox.exec();
+	return -1;
+}
+
+int main(int argc, char *argv[])
+{
+	QApplication a(argc, argv);
+	a.setApplicationName(VER_PRODUCTNAME_STR);
+	a.setApplicationVersion(VER_PRODUCTVERSION_STR);
+	a.setOrganizationName(VER_COMPANYNAME_STR);
+	a.setOrganizationDomain(VER_COMPANYDOMAIN_STR);
+        
+	try
+	{
+		MainWindow w;
+		w.setMinimumSize(800, 600);
+		w.show();
+                
+		return a.exec();
+	}
+	catch (std::exception &ex)
+	{
+		return handleFatalError(ex.what());
+	}
+        catch (QString &errorMessage)
+	{
+		return handleFatalError(errorMessage);
+	}
+}
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/mainwindow.h
+	cat << [EOF] > ${PROJECT_NAME}/src/main/mainwindow.h
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+
+class MainWindow : public QMainWindow
+{
+	Q_OBJECT
+
+public:
+	MainWindow(QWidget *parent = 0);
+	~MainWindow();
+
+private:
+	void createActions();
+	void createMenus();
+};
+
+#endif // MAINWINDOW_H
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/src/main/mainwindow.cpp
+	cat << [EOF] > ${PROJECT_NAME}/src/main/mainwindow.cpp
+#include "mainwindow.h"
+#include "version.h"
+
+// ---------------------------------------------------------------------------
+
+MainWindow::MainWindow(QWidget *parent) :
+	QMainWindow(parent)
+{
+	setWindowTitle("Settings Tester");
+	setWindowIcon(QIcon(":/icon.png"));
+
+	createActions();
+	createMenus();
+}
+
+MainWindow::~MainWindow()
+{
+}
+
+// ---------------------------------------------------------------------------
+
+void MainWindow::createActions()
+{
+}
+
+void MainWindow::createMenus()
+{
+}
+
+// ---------------------------------------------------------------------------
+[EOF]
+}
+
+function createScripts() {
+	PROJECT_NAME=$1
+
+	echo Creating ${PROJECT_NAME}/common.sh
+	cat << [EOF] > ${PROJECT_NAME}/common.sh
+VERSION=\$(cat src/version.h | awk '{gsub(/\\\\0/,""); gsub(/\\"/,""); if (\$2 == "VER_PRODUCTVERSION_STR") print \$3; }')
+
+rm -rf build
+find . -name Makefile* -exec rm -f {} \\;
+find . -name *.o -exec rm -f {} \\;
+find . -name ui_* -exec rm -f {} \\;
+find . -name moc_* -exec rm -f {} \\;
+find . -name object_script.* -exec rm -f {} \\;
+[EOF]
+
+	echo Creating ${PROJECT_NAME}/make_linux.sh
+	cat << [EOF] > ${PROJECT_NAME}/make_linux.sh
+#!/bin/sh
+
+. ./common.sh
+qmake-qt4 && make all
+[EOF]
+	chmod 755 ${PROJECT_NAME}/make_linux.sh
+	
+	echo Creating ${PROJECT_NAME}/make_win.sh
+	cat << [EOF] > ${PROJECT_NAME}/make_win.sh
+#!/bin/sh
+
+function usage()
+{
+	echo "Usage: \$0 -a <32|64>" 1>&2
+	exit 1
+}
+
+while getopts ":a:" o; do
+	case "\${o}" in
+	a)
+		ARCH=\${OPTARG}
+		((ARCH == 32 || ARCH == 64)) || usage
+		;;
+
+	*)
+		usage
+		;;
+	esac
+done
+shift \$((OPTIND-1))
+
+if [ -z "\${ARCH}" ]; then
+	usage
+fi
+
+QTIF_BIN=/home/bartek/dev/QtIFWin/bin/
+LIBS_RELEASE="QtCore4.dll QtGui4.dll QtSvg4.dll"
+LIBS_COMMON="libjpeg-62.dll libpng16-16.dll libstdc++-6.dll libtiff-5.dll zlib1.dll"
+RELEASE_DATE=\`date +"%Y-%m-%d"\`
+
+if [ "\${ARCH}" -eq 32 ]; then
+	MINGW_BIN=/usr/i686-w64-mingw32/sys-root/mingw/bin
+	LIBS_COMMON="\${LIBS_COMMON} libgcc_s_sjlj-1.dll"
+elif [ "\${ARCH}" -eq 64 ]; then
+	MINGW_BIN=/usr/x86_64-w64-mingw32/sys-root/mingw/bin
+	LIBS_COMMON="\${LIBS_COMMON} libgcc_s_seh-1.dll"
+fi
+
+function copyLibs()
+{
+	LIBS=\$1
+	DEST=\$2
+	for LIB in \$LIBS; do
+		FILE=\$MINGW_BIN/\$LIB
+		echo Copying \$LIB to \$DEST...
+		cp \$FILE \$DEST
+	done
+}
+
+function preparePackage()
+{
+	MODE=\$1
+	echo Preparing \$MODE package...
+	cp changelog.txt build/\$MODE/main
+	rm -rf build/\$MODE/main/moc
+	rm -rf build/\$MODE/main/obj
+	rm -rf build/\$MODE/main/*.a
+	cp -R 3rdparty/win\${ARCH}/* build/\$MODE/main
+}
+
+function makePortable()
+{
+	MODE=\$1
+	echo Creating portable archive...
+	cd build/\$MODE/main && zip -9 -r ../../${PROJECT_NAME}\${ARCH}_\${MODE}_\${VERSION}.zip . && cd ~-
+}
+
+. ./common.sh
+mingw\${ARCH}-qmake-qt4 && make all
+
+copyLibs "\$LIBS_COMMON" build/release/main
+copyLibs "\$LIBS_RELEASE" build/release/main
+preparePackage release
+makePortable release
+[EOF]
+	chmod 755 ${PROJECT_NAME}/make_win.sh
+}
+
+function gitInit() {
+	PROJECT_NAME=$1
+
+	echo Creating ${PROJECT_NAME}/.gitignore
+	cat << [EOF] > ${PROJECT_NAME}/.gitignore
+build
+lib
+mkspecs
+*~
+doc/html
+Makefile
+*.dylib
+*.o
+*.a
+moc_*.cpp
+qrc_*.cpp
+*.pro.user
+*.moc
+lib*.so
+lib*.so.*
+.qmake.cache
+include/*
+lib/cmake/*
+lib*.la
+lib*.prl
+module-paths/*
+lib/pkgconfig/*
+Makefile.Debug
+Makefile.Release
+*.swp
+[EOF]
+	cd ${PROJECT_NAME} && git init && git add . && git commit -m "Initial version"
+	cd ~-
+}
+
+PROJECT_NAME=$1
+if [[ -z "$PROJECT_NAME" ]]; then
+	echo Project name missing
+	exit 1
+fi
+
+COMPANY_NAME=$2
+if [[ -z "$COMPANY_NAME" ]]; then
+	echo Company name missing
+	exit 1
+fi
+
+COMPANY_DOMAIN=$3
+if [[ -z "$COMPANY_DOMAIN" ]]; then
+	echo Company domain missing
+	exit 1
+fi
+
+echo Creating C++ project $PROJECT_NAME
+createProjectStructure	"$PROJECT_NAME"
+createResources		"$PROJECT_NAME"
+createProFiles		"$PROJECT_NAME"
+createSourceFiles	"$PROJECT_NAME" "$COMPANY_NAME" "$COMPANY_DOMAIN"
+createScripts		"$PROJECT_NAME"
+gitInit			"$PROJECT_NAME"
