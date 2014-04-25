@@ -384,28 +384,37 @@ function copyLibs()
 function preparePackage()
 {
 	MODE=\$1
+	MODULE=\$2
 	echo Preparing \$MODE package...
-	cp changelog.txt build/\$MODE/main
-	rm -rf build/\$MODE/main/moc
-	rm -rf build/\$MODE/main/obj
-	rm -rf build/\$MODE/main/*.a
-	cp -R 3rdparty/win\${ARCH}/* build/\$MODE/main
+	cp changelog.txt build/\$MODE/\$MODULE
+	rm -rf build/\$MODE/\$MODULE/moc
+	rm -rf build/\$MODE/\$MODULE/obj
+	rm -rf build/\$MODE/\$MODULE/*.a
+	cp -R 3rdparty/win\${ARCH}/* build/\$MODE/\$MODULE
 }
 
 function makePortable()
 {
 	MODE=\$1
+	MODULE=\$2
 	echo Creating portable archive...
-	cd build/\$MODE/main && zip -9 -r ../../${PROJECT_NAME}_win\${ARCH}_\${MODE}_\${VERSION}.zip . && cd ~-
+	cd build/\$MODE/\$MODULE && zip -9 -r ../../${PROJECT_NAME}_win\${ARCH}_\${MODE}_\${VERSION}.zip . && cd ~-
+}
+
+function makeModule()
+{
+	MODE=\$1
+	MODULE=\$2
+
+	copyLibs "\$LIBS_COMMON" build/\$MODE/\$MODULE
+	copyLibs "\$LIBS_RELEASE" build/\$MODE/\$MODULE
+	preparePackage \$MODE \$MODULE
+	makePortable \$MODE \$MODULE
 }
 
 . ./common.sh
 mingw\${ARCH}-qmake-qt4 && make all
-
-copyLibs "\$LIBS_COMMON" build/release/main
-copyLibs "\$LIBS_RELEASE" build/release/main
-preparePackage release
-makePortable release
+makeModule	release main
 [EOF]
 	chmod 755 ${PROJECT_NAME}/make_win.sh
 }

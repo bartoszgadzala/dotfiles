@@ -11,7 +11,7 @@ if [ -f .bash_local ]; then
 fi
 
 # Aliases
-alias ls="ls --color"
+alias ls="ls --color=auto"
 alias ll="ls -l"
 alias la="ls -a"
 alias tmux="tmux -2"
