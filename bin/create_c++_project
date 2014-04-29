@@ -280,7 +280,7 @@ private:
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent)
 {
-	setWindowTitle("Settings Tester");
+	setWindowTitle("${PROJECT_NAME}");
 	setWindowIcon(QIcon(":/icon.png"));
 
 	createActions();
