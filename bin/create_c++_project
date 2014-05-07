@@ -69,6 +69,7 @@ ${PROJECT_NAME} 1.0
 
         * Initial version
 [EOF]
+	unix2dos ${PROJECT_NAME}/changelog.txt
 }
 
 

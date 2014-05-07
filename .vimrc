@@ -21,3 +21,4 @@ source ~/.vim/startup/settings.vim
 "============== Filetype stuff ===============
 filetype plugin on
 filetype indent on
+source ~/.vim/startup/filetypes.vim
