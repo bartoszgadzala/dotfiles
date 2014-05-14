@@ -10,14 +10,16 @@ function createHeaderFile()
 #ifndef ${DEFINE}
 #define ${DEFINE}
 
-class ${CLASS_NAME}
-{
-public:
-	${CLASS_NAME}();
-	virtual ~${CLASS_NAME}();
+#include "autotest.h"
 
-private:
+class ${CLASS_NAME} : public QObject
+{
+	Q_OBJECT
+
+private slots:
+	void testCase();
 };
+DECLARE_TEST(${CLASS_NAME})
 
 #endif // ${DEFINE}
 [EOF]
@@ -33,13 +35,12 @@ function createImplementationFile() {
 
 // ---------------------------------------------------------------------------
 
-${CLASS_NAME}::${CLASS_NAME}()
+void ${CLASS_NAME}::testCase()
 {
+	// TODO: implement
+	QCOMPARE(1, 1);
 }
 
-${CLASS_NAME}::~${CLASS_NAME}()
-{
-}
 
 // ---------------------------------------------------------------------------
 [EOF]
