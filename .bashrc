@@ -10,6 +10,16 @@ if [ -f .bash_local ]; then
 	. .bash_local
 fi
 
+# Google Cloud SDK.
+if [ -f google-cloud-sdk/path.bash.inc ]; then
+	. google-cloud-sdk/path.bash.inc
+fi
+
+# Bash completion for gcloud.
+if [ -f google-cloud-sdk/completion.bash.inc ]; then
+	. google-cloud-sdk/completion.bash.inc
+fi
+
 # Aliases
 alias ls="ls --color=auto"
 alias ll="ls -l"
@@ -46,3 +56,4 @@ if [ ! "$(pgrep mopidy)" ]; then (mopidy &> /dev/null &); fi
 
 # Update RSS feeds
 if [ ! "$(pgrep canto-fetch)" ]; then (canto-fetch -db); fi
+
