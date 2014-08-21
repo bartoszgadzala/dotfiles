@@ -43,7 +43,7 @@ fi
 
 # Powerline
 function _update_ps1() {
-	if [[ -f ~/bin/powerline-shell/powerline-shell.py ]] && [[ $TERM == *256* ]] && [[ ! `ps $PPID | grep 'mc\|gjs'` ]]; then
+	if [[ -f ~/bin/powerline-shell/powerline-shell.py ]] && [[ $TERM == *256* ]] && [[ ! `ps $PPID | grep 'mc\|gjs\|qmlscene'` ]]; then
 		export PS1="$(~/bin/powerline-shell/powerline-shell.py $? 2> /dev/null)"
 	else
 		export PS1="[\u@\h \W]\\$ "
