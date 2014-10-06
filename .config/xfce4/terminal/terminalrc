@@ -22,4 +22,5 @@ MiscTabCloseMiddleClick=TRUE
 MiscTabPosition=GTK_POS_TOP
 MiscHighlightUrls=TRUE
 MiscScrollAlternateScreen=TRUE
-
+ShortcutsNoMenukey=TRUE
+ShortcutsNoMnemonics=TRUE
