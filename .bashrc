@@ -21,7 +21,7 @@ if [ -f google-cloud-sdk/completion.bash.inc ]; then
 fi
 
 # Aliases
-alias ls="ls --color=auto"
+alias ls="ls --color=auto --group-directories-first"
 alias ll="ls -l"
 alias la="ls -a"
 alias tmux="tmux -2"
