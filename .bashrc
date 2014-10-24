@@ -41,6 +41,9 @@ if [[ $TERM == xterm* ]]; then
 	export TERM=xterm-256color 
 fi
 
+# MC
+export MC_SKIN=$HOME/.mc/solarized.ini
+
 # Powerline
 function _update_ps1() {
 	if [[ -f ~/bin/powerline-shell/powerline-shell.py ]] && [[ $TERM == *256* ]] && [[ ! `ps $PPID | grep 'mc\|gjs\|qmlscene'` ]]; then

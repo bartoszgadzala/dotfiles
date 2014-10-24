@@ -1,11 +1,12 @@
 #!/bin/sh
 
-DEST=/run/media/bartek/ADATA_EXT4/backup/
+DEST=rsync://bartek@192.168.0.250/Backup/bartek
 
 function backup_dir()
 {
 	SRC=$1
 	echo Creating backup of [$SRC] to [$DEST]...
+	export RSYNC_PASSWORD=ricochet
 	rsync -aqu --inplace --no-motd $SRC $DEST && sync
 }
 
@@ -13,18 +14,15 @@ LOCKFILE=/tmp/${USER}_backup.lock
 if [[ -e $LOCKFILE ]]; then
 	echo There is a backup process already running...
 	exit 2
-elif [[ -d $DEST ]]; then
+else
 	touch $LOCKFILE
 	logger "Backup of the vital files started. Do not unplug disk until it finished."
 	notify-send --urgency=Normal --app-name=Backup "Backup started" "Backup of the vital files started. Do not unplug disk until it finished."
-	backup_dir ~/Dokumenty
-	backup_dir ~/Pobrane
+	#backup_dir ~/Dokumenty
+	#backup_dir ~/Pobrane
 	backup_dir ~/workspace
 	notify-send --urgency=Normal --app-name=Backup "Backup finished" "Backup is done. You can safely umount disk."
 	logger "Backup is done. You can safely umount disk."
 	rm -f $LOCKFILE
 	exit 0
-else
-	echo There is no backup drive mounted at [$DEST]. Exiting.
-	exit 1
 fi

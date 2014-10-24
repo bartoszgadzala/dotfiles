@@ -309,9 +309,11 @@ void MainWindow::createMenus()
 function createScripts() {
 	PROJECT_NAME=$1
 
-	echo Creating ${PROJECT_NAME}/common.sh
-	cat << [EOF] > ${PROJECT_NAME}/common.sh
+	echo Creating ${PROJECT_NAME}/make_common.sh
+	cat << [EOF] > ${PROJECT_NAME}/make_common.sh
 VERSION=\$(cat src/version.h | awk '{gsub(/\\\\0/,""); gsub(/\\"/,""); if (\$2 == "VER_PRODUCTVERSION_STR") print \$3; }')
+
+:w
 
 rm -rf build
 find . -name Makefile* -exec rm -f {} \\;
