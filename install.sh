@@ -4,7 +4,7 @@ INSTALLDIR=${1:-$HOME}
 mkdir -p $INSTALLDIR/.canto
 mkdir -p $INSTALLDIR/bin
 
-for i in .bashrc .conkyrc .dir_colors .fonts .mc .tmux.conf .vim .vimrc .canto/conf.py bin/*
+for i in .bashrc .conkyrc .dir_colors .fonts .mc .tmux.conf .vim .vimrc .zshrc .canto/conf.py bin/*
 do
 	F=$INSTALLDIR/$i
 	if [ $F -ef $i ]; then
