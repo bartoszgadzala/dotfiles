@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 INSTALLDIR=${1:-$HOME}
 
 mkdir -p $INSTALLDIR/.canto
