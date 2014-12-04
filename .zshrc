@@ -14,18 +14,22 @@ compinit
 # End of lines added by compinstall
 
 # Prompt: powerline
-function _update_ps1()
-{
-	if  [ -x ~/bin/powerline-zsh/powerline-zsh.py ]; then
-		export PROMPT="$(~/bin/powerline-zsh/powerline-zsh.py $?)"
+function powerline_precmd() {
+	if  [ -x ~/bin/powerline-shell/powerline-shell.py ]; then
+		export PS1="$(~/bin/powerline-shell/powerline-shell.py $? --shell zsh 2> /dev/null)"
 	else
 		export PROMPT='[%n@%m]%~%# '
 	fi
 }
-precmd()
-{
-	_update_ps1
+function install_powerline_precmd() {
+	for s in "${precmd_functions[@]}"; do
+		if [ "$s" = "powerline_precmd" ]; then
+			return
+		fi
+	done
+	precmd_functions+=(powerline_precmd)
 }
+install_powerline_precmd
 
 # Path
 export PATH=$PATH:~/bin
