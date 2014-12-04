@@ -14,6 +14,8 @@ create_link ()
 }
 
 mkdir -p $INSTALLDIR/.canto
+mkdir -p $INSTALLDIR/.config
+mkdir -p $INSTALLDIR/.themes
 mkdir -p $INSTALLDIR/bin
 
 for i in .bashrc .conkyrc .dir_colors .fonts .mc .tmux.conf .vim .vimrc .xinitrc .Xresources .zshrc .canto/conf.py .config/awesome .themes/xterm bin
@@ -29,4 +31,7 @@ echo "Installing vim bundles..."
 vim +BundleInstall +qall
 
 echo "Installing powershell"
-cd ~/bin/powerline-shell; ./install.py; cd ~-
+cd ~/bin/powerline-shell
+echo "THEME = 'solarized-dark'" >> config.py
+./install.py
+cd ~-
