@@ -15,8 +15,8 @@ compinit
 
 # Prompt: powerline
 function powerline_precmd() {
-	if  [ -x ~/bin/powerline-shell/powerline-shell.py ]; then
-		export PS1="$(~/bin/powerline-shell/powerline-shell.py $? --shell zsh 2> /dev/null)"
+	if [ -x ~/bin/powerline-shell/powerline-shell.py ]; then
+		export PS1="$(~/bin/powerline-shell//powerline-shell.py $? --shell zsh 2> /dev/null)"
 	else
 		export PROMPT='[%n@%m]%~%# '
 	fi
