@@ -1,0 +1,13 @@
+! Xft settings
+Xft.dpi:       96
+Xft.antialias: true
+Xft.rgba:      rgb
+Xft.hinting:   true
+Xft.hintstyle: hintslight
+
+! xterm settings
+xterm*faceName:     SourceCodePro:pixelsize=13
+xterm*termName:     xterm-256color
+
+! colorscheme
+#include ".themes/xterm/solarized-dark"
