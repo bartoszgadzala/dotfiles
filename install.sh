@@ -30,8 +30,8 @@ git submodule init && git submodule update
 echo "Installing vim bundles..."
 vim +BundleInstall +qall
 
-echo "Installing powershell"
+echo "Installing powerline-shell"
 cd ~/bin/powerline-shell
+cp config.py.dist config.py
 echo "THEME = 'solarized-dark'" >> config.py
 ./install.py
-cd ~-
