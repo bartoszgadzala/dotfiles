@@ -16,6 +16,9 @@ do
 	fi
 done;
 
+echo "Updating font cache..."
+fc-cache -vf
+
 echo "Initializing submodules..."
 git submodule init && git submodule update
 

@@ -12,3 +12,24 @@ zstyle :compinstall filename '/home/bartek/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+# Prompt: powerline
+function _update_ps1()
+{
+	if  [ -x ~/bin/powerline-zsh/powerline-zsh.py ]; then
+		export PROMPT="$(~/bin/powerline-zsh/powerline-zsh.py $?)"
+	else
+		export PROMPT='[%n@%m]%~%# '
+	fi
+}
+precmd()
+{
+	_update_ps1
+}
+
+# Path
+export PATH=$PATH:~/bin
+
+# Settings
+export EDITOR="vim"
+export MC_SKIN=$HOME/.mc/solarized.ini

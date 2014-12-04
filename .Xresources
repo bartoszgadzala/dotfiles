@@ -6,7 +6,7 @@ Xft.hinting:   true
 Xft.hintstyle: hintslight
 
 ! xterm settings
-xterm*faceName:		Source Code Pro for Powerline,Source Code Pro Light
+xterm*faceName:		Source Code Pro for Powerline,Source Code Pro Regular
 xterm*faceSize:		10
 xterm*termName:		xterm-256color
 xterm*loginshell:	true
