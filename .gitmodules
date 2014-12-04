@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/vundle"]
 	path = .vim/bundle/vundle
 	url = https://github.com/gmarik/vundle.git
-[submodule "bin/powerline-zsh"]
-	path = bin/powerline-zsh
-	url = https://github.com/carlcarl/powerline-zsh
 [submodule "bin/powerline-shell"]
 	path = bin/powerline-shell
 	url = https://github.com/milkbikis/powerline-shell
