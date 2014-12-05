@@ -104,19 +104,16 @@ myawesomemenu = {
 mydevmenu = {
 }
 
-myimmenu = {
-   { "skype", "skype" }
-}
-
-mybrowsermenu = {
+myinternetmenu = {
    { "chrome", "google-chrome" },
-   { "firefox", "firefox" }
+   { "firefox", "firefox" },
+   { "thunderbird", "thunderbird" },
+   { "skype", "skype" }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "dev", mydevmenu },
-                                    { "browser", mybrowsermenu },
-                                    { "im", myimmenu },
+                                    { "internet", myinternetmenu },
                                     { "open terminal", terminal }
                                   }
                         })
