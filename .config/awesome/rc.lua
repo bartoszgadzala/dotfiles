@@ -11,6 +11,12 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 
+-- {{{ Variable definitions
+local home   = os.getenv("HOME")
+local exec   = awful.util.spawn
+local sexec  = awful.util.spawn_with_shell
+local scount = screen.count()
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -38,7 +44,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init(home .. "/.config/awesome/themes/blue-black-red/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -55,17 +61,14 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen
+    awful.layout.suit.floating,			-- 1
+    awful.layout.suit.tile,			-- 2
+    awful.layout.suit.tile.left,		-- 3
+    awful.layout.suit.tile.bottom,		-- 4
+    awful.layout.suit.tile.top,			-- 5
+    awful.layout.suit.fair,			-- 6
+    awful.layout.suit.max,			-- 7
+    awful.layout.suit.max.fullscreen		-- 8
 }
 -- }}}
 
@@ -79,10 +82,14 @@ end
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+	names =	 { "term",    "web",       "im" },
+	layout = { layouts[7], layouts[7], layouts[7]}
+}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    --tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
 
