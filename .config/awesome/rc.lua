@@ -102,6 +102,12 @@ myawesomemenu = {
 }
 
 mydevmenu = {
+   { "pencil", "pencil" }
+}
+
+mygfxmenu = {
+   { "gimp", "gimp" },
+   { "inkscape", "inkscape" }
 }
 
 myinternetmenu = {
@@ -114,6 +120,7 @@ myinternetmenu = {
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "dev", mydevmenu },
                                     { "internet", myinternetmenu },
+                                    { "gfx", mygfxmenu },
                                     { "open terminal", terminal }
                                   }
                         })
