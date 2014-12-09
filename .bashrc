@@ -28,10 +28,12 @@ fi
 alias ls="ls --color=auto --group-directories-first"
 alias ll="ls -l"
 alias la="ls -a"
-alias tmux="tmux -2"
 alias yum="sudo yum -y"
 alias umount="sudo umount"
 alias bim="vim"
+if [[ $TERM == *256* ]]; then
+	alias tmux="tmux -2"
+fi
 
 # Path
 export PATH=$PATH:~/bin
@@ -62,7 +64,10 @@ export PROMPT_COMMAND="_update_ps1"
 if [ ! "$(pgrep mopidy)" ]; then (mopidy &> /dev/null &); fi
 
 # Update RSS feeds
-if [ ! "$(pgrep canto-fetch)" ]; then (canto-fetch -db); fi
+if [ ! "$(pgrep canto-fetch)" ]; then (canto-fetch -db &> /dev/null &); fi
 
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+if [ -d .rvm ]; then
+	source ~/.rvm/scripts/rvm
+	export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+fi
