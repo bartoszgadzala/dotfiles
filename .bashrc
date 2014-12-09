@@ -60,3 +60,5 @@ if [ ! "$(pgrep mopidy)" ]; then (mopidy &> /dev/null &); fi
 # Update RSS feeds
 if [ ! "$(pgrep canto-fetch)" ]; then (canto-fetch -db); fi
 
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

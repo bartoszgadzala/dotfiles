@@ -56,3 +56,5 @@ export PATH=$PATH:~/bin
 # Settings
 export EDITOR="vim"
 export MC_SKIN=$HOME/.mc/solarized.ini
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
