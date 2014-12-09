@@ -10,6 +10,10 @@ if [ -f .bash_local ]; then
 	. .bash_local
 fi
 
+if [ -f .profile ]; then
+	. .profile
+fi
+
 # Google Cloud SDK.
 if [ -f google-cloud-sdk/path.bash.inc ]; then
 	. google-cloud-sdk/path.bash.inc
