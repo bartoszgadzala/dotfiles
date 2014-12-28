@@ -44,11 +44,11 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(home .. "/.config/awesome/themes/blue-black-red/theme.lua")
+beautiful.init("/usr/local/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
-editor = os.getenv("EDITOR") or "vi"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -83,12 +83,12 @@ end
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
 tags = {
-	names =	 { "term",    "web",       "im" },
-	layout = { layouts[7], layouts[7], layouts[7]}
+	names =  { "term",     "web" },
+	layout = { layouts[7], layouts[7]}
 }
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    --tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    -- tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
     tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
