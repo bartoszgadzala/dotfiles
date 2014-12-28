@@ -1,5 +1,7 @@
 # .bashrc
 
+export SYSTEM=$(uname)
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -8,10 +10,6 @@ fi
 # Local configuration
 if [ -f .bash_local ]; then
 	. .bash_local
-fi
-
-if [ -f .profile ]; then
-	. .profile
 fi
 
 # Google Cloud SDK.
@@ -25,10 +23,14 @@ if [ -f google-cloud-sdk/completion.bash.inc ]; then
 fi
 
 # Aliases
-alias ls="ls --color=auto --group-directories-first"
+if [[ "${SYSTEM}" == "FreeBSD" ]]; then
+	alias ls="ls -G"
+else
+	alias ls="ls --color=auto --group-directories-first"
+	alias yum="sudo yum -y"
+fi
 alias ll="ls -l"
 alias la="ls -a"
-alias yum="sudo yum -y"
 alias umount="sudo umount"
 alias bim="vim"
 if [[ $TERM == *256* ]]; then
@@ -42,7 +44,7 @@ export PATH=$PATH:~/bin
 export EDITOR="vim"
 
 # Dircolors
-if [[ $TERM == xterm* ]]; then
+if [[ $TERM == xterm* && "${SYSTEM}" != "FreeBSD" ]]; then
 	eval `dircolors ~/.dir_colors`
 	export TERM=xterm-256color 
 fi
