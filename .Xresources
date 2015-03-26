@@ -15,6 +15,8 @@ xterm*rightScrollBar:	true
 xterm*ScrollBar:	false
 xterm*scrollTtyOutput:	false
 xterm*vt100*geometry:	160x50
+xterm*vt100.translations: #override <Btn1Up>: select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0)
+
 
 ! colorscheme
 #include ".themes/xterm/solarized-dark"
